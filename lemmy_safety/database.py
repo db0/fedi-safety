@@ -13,7 +13,7 @@ class CheckedImage(Base):
     __tablename__ = 'images'
 
     id = Column(Integer, primary_key=True)
-    filename = Column(String, nullable=False, unique=True)
+    filename = Column(String, nullable=False, unique=True, index=True)
     nsfw = Column(Boolean, default=None)
     csam = Column(Boolean, default=None)
     created = Column(DateTime, default=datetime.utcnow, nullable=False)

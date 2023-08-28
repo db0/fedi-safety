@@ -16,21 +16,22 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(module)s:%(lineno)d 
 
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument('--all', action="store_true", required=False, default=False, help="Check all images in the storage account")
-arg_parser.add_argument('-t', '--theads', action="store", required=False, default=100, help="How many threads to use. The more threads, the more VRAM requirements, but the faster the processing.")
-arg_parser.add_argument('-m', '--minutes', action="store", required=False, default=20, help="The images of the past how many minutes to check.")
+arg_parser.add_argument('-t', '--threads', action="store", required=False, default=100, type=int, help="How many threads to use. The more threads, the more VRAM requirements, but the faster the processing.")
+arg_parser.add_argument('-m', '--minutes', action="store", required=False, default=20, type=int, help="The images of the past how many minutes to check.")
+arg_parser.add_argument('--dry_run', action="store_true", required=False, default=False, help="Will check and reprt but will not delete")
 args = arg_parser.parse_args()
 
 
 def check_and_delete_filename(key):
     is_csam = check_image(key)
-    if is_csam:
+    if is_csam and not args.dry_run:
         delete_image(key)
     return is_csam, key
 
 
 def check_and_delete_object(obj):
     is_csam = check_image(obj.key)
-    if is_csam:
+    if is_csam and not args.dry_run:
         obj.delete()
     return is_csam, obj
 

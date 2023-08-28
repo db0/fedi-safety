@@ -16,7 +16,8 @@ def check_image(key):
     except UnidentifiedImageError:
         logger.warning("Image could not be read. Returning it as CSAM to be sure.")
         return True
-    
+    if not image:
+        return None
     is_csam, results, info = check_for_csam(
         interrogator=interrogator,
         image=image,
