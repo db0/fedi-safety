@@ -1,0 +1,11 @@
+--extra-index-url https://download.pytorch.org/whl/cu118
+torch>=2.0.0
+requests >= 2.27
+python-dotenv
+loguru
+pillow~=9.3.0
+boto3
+regex
+horde-safety
+SQLAlchemy
+clip-interrogator==0.6.0
