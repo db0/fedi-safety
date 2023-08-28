@@ -1,7 +1,7 @@
 # lemmy-safety
 This is a tool for Lemmy Administrators to easily check and clean all images in the pict-rs object storage for illegal or unethical content
 
-Note, this script **does not save any images locally**. All images are stored in only, checked and then forgotten.
+Note, this script **does not save any images locally**. All images are stored in RAM only, checked and then forgotten.
 
 Due to the way lemmy and pict-rs works, we instance admins do not have sufficient means to check for CSAM, which puts them in big risks as image thumbnails from foreign instances are cached by default to their own object storage. 
 
