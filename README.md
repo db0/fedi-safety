@@ -53,3 +53,8 @@ However the library used for checking for CSAM has been [robustly checked throug
 If you are concerned about deleting too many, or not deleting enough, or want to follow-up first before taking action, you can use the `--dry_run`
 cli arg to mark the found csam but avoid deleting them.
 
+# Support
+
+If you want to improve this tool, feel free to send PRs.
+
+Alternatively feel free to support my development efforts on [patreon](https://www.patreon.com/db0) or github
