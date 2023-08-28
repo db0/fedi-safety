@@ -18,13 +18,16 @@ def check_image(key):
         return True
     if not image:
         return None
-    is_csam, results, info = check_for_csam(
-        interrogator=interrogator,
-        image=image,
-        prompt='',
-        model_info={"nsfw": True, "tags": []},
-    )
-
+    try:
+        is_csam, results, info = check_for_csam(
+            interrogator=interrogator,
+            image=image,
+            prompt='',
+            model_info={"nsfw": True, "tags": []},
+        )
+    except OSError:
+        logger.warning("Image could not be read. Returning it as CSAM to be sure.")
+        return True
     if is_csam:
         logger.warning(f"{key} rejected as CSAM")
     else:

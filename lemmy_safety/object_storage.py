@@ -22,12 +22,12 @@ s3_bucket = s3_resource.Bucket(pictrs_bucket)
 def download_image(key):
     try:
         response = s3_client.get_object(Bucket=pictrs_bucket, Key=key)
-        img = response['Body'].read()
-        img = PIL.Image.open(BytesIO(img))
-        return img
     except ClientError as e:
         logger.error(f"Error encountered while downloading {key}: {e}")
         return None
+    img = response['Body'].read()
+    img = PIL.Image.open(BytesIO(img))
+    return img
 
 def delete_image(key):
     response = s3_client.delete_object(
