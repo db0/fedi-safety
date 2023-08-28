@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 lemmy_safety.db
+lemmy_safety.db-journal
