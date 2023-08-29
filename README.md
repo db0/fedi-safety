@@ -1,7 +1,7 @@
 # lemmy-safety
 This is a tool for Lemmy Administrators to easily check and clean all images in the pict-rs object storage for illegal or unethical content
 
-Note, this script **does not save any images locally**. All images are stored in RAM only, checked and then forgotten.
+Note, this script **does not save any images locally** and it **does not send images to any extenal services**. All images are stored in RAM only, checked and then forgotten.
 
 Due to the way lemmy and pict-rs works, instance admins do not have sufficient means to check for CSAM, which puts them in big risks as image thumbnails from foreign instances are cached by default to their own object storage. 
 
@@ -13,6 +13,8 @@ There's two big potential problems:
 The lemmy safety will go directly through your object storage and scan each image for potential CSAM and automatically delete it. Covering both those problems in one go. You can also run this script constantly, to ensure no new such images can survive.
 
 The results will also be written in an sqlite DB, which can then be used to follow-up and discover the user and instances uploading them.
+
+Note. This tool is a blunt instrument. It is accurate enough to catch most CSAM, but not to mark **only** CSAM. Check the [False positives and False negatives](#False_positives_and_False_negatives) section.
 
 # Requirements
 
@@ -47,11 +49,24 @@ The daemon will then endlessly repeat this process after a 30 seconds wait.
 
 # False positives and False negatives
 
-The scirpt has the potential to detect wrongly of course as the clip model is not perfect.
-However the library used for checking for CSAM has been [robustly checked through the AI Horde](https://dbzer0.com/blog/ai-powered-anti-csam-filter-for-stable-diffusion/)
+The script has the potential to detect wrongly of course as the clip model is not perfect.
+However the library used for checking for CSAM has been [robustly checked through the AI Horde](https://dbzer0.com/blog/ai-powered-anti-csam-filter-for-stable-diffusion/) and has an acceptable false-positive ratio given the risk of the alternatives.
 
 If you are concerned about deleting too many, or not deleting enough, or want to follow-up first before taking action, you can use the `--dry_run`
 cli arg to mark the found csam but avoid deleting them.
+
+Roughly speaking, this tool will mark a lot of false positives. **This is normal**. You should be worried if it *wasn't* catching any false positives since it would mean potential images slipping through. 
+
+On average, <1% of all your images will be picked by this tool, most of which should either be NSFW or have children subjects. 
+
+So yes, you will lose some legitimate images, but you almost ensure you won't get CSAM as well. I will leave the cost-benefit ratio calculations to you.
+
+# Legal 
+
+Other than the classic AGPL disclaimer about me making no guarantees about this tool, I also need to mention that different juristictions in the world have different approaches to CSAM. For example some require that you send every potential positive to authorities. How that works with  a tool like this which casts a very wide net is unclear.
+
+If you are worried enough, you should consult a local lawyer.
+
 
 # Support
 
