@@ -18,7 +18,7 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(module)s:%(lineno)d 
 
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument('--all', action="store_true", required=False, default=False, help="Check all images in the storage account")
-arg_parser.add_argument('-t', '--threads', action="store", required=False, default=100, type=int, help="How many threads to use. The more threads, the more VRAM requirements, but the faster the processing.")
+arg_parser.add_argument('-t', '--threads', action="store", required=False, default=10, type=int, help="How many threads to use. The more threads, the more VRAM requirements, but the faster the processing.")
 arg_parser.add_argument('-m', '--minutes', action="store", required=False, default=20, type=int, help="The images of the past how many minutes to check.")
 arg_parser.add_argument('--dry_run', action="store_true", required=False, default=False, help="Will check and reprt but will not delete")
 args = arg_parser.parse_args()
@@ -27,24 +27,24 @@ args = arg_parser.parse_args()
 def check_and_delete_filename(file_details):
     try:
         image: PIL.Image.Image = local_storage.download_image(str(file_details["filepath"]))
+        if not image:
+            is_csam = None
+        else:
+            is_csam = check_image(image)
     except UnidentifiedImageError:
         logger.warning("Image could not be read. Returning it as CSAM to be sure.")
         is_csam = True
-    if not image:
-        is_csam = None
-    else:
-        is_csam = check_image(image)
     if is_csam and not args.dry_run:
         local_storage.delete_image(str(file_details["filepath"]))
     return is_csam, file_details
 
 def run_cleanup(cutoff_time = None):
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ThreadPoolExecutor(max_workers=args.threads) as executor:
         futures = []
         for file_details in local_storage.get_all_images(cutoff_time):
             if not database.is_image_checked(file_details["key"]):
                 futures.append(executor.submit(check_and_delete_filename, file_details))
-            if len(futures) >= args.threads:
+            if len(futures) >= 500:
                 for future in futures:
                     result, fdetails = future.result()
                     database.record_image(fdetails["key"],csam=result)
