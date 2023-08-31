@@ -4,14 +4,14 @@ from datetime import datetime, timedelta, timezone
 from concurrent.futures import ThreadPoolExecutor
 import argparse
 import PIL.Image
+from PIL import UnidentifiedImageError
 
 from loguru import logger
 import sys
 
-from lemmy_safety.check import check_image
 from lemmy_safety import local_storage
 from lemmy_safety import database
-from PIL import UnidentifiedImageError
+from lemmy_safety.check import check_image
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(module)s:%(lineno)d - %(message)s', level=logging.WARNING)
 
