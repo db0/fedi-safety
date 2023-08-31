@@ -1,5 +1,5 @@
 # lemmy-safety
-This is a tool for Lemmy Administrators to easily check and clean all images in the pict-rs object storage for illegal or unethical content
+This is a tool for Lemmy Administrators to easily check and clean all images in the pict-rs storage for illegal or unethical content
 
 Note, this script **does not save any images locally** and it **does not send images to any extenal services**. All images are stored in RAM only, checked and then forgotten.
 
@@ -10,7 +10,7 @@ There's two big potential problems:
 1. Malicious users can simply open a new post, upload an image and cancel the new post, and that image will then be invisibly hosted by their instance among thousands of others with a URL known only by the malicious user. That user could then contact their  provider anonymously forwarding that URL, and try to take their lemmy instance down
 2. Users on different instances with looser controls can upload CSAM posts and if those instances subscribed by any user in your own instance those image thumbnails will be cached to your own instance. Even if the relevant CSAM post is deleted, such images will persists in your object storage.
 
-The lemmy safety will go directly through your object storage and scan each image for potential CSAM and automatically delete it. Covering both those problems in one go. You can also run this script constantly, to ensure no new such images can survive.
+The lemmy safety will go directly through your pict-rs storage (either object storage or filesysystem) and scan each image for potential CSAM  and automatically delete it. Covering both those problems in one go. You can also run this script constantly, to ensure no new such images can survive.
 
 The results will also be written in an sqlite DB, which can then be used to follow-up and discover the user and instances uploading them.
 
@@ -26,20 +26,31 @@ This means you need a GPU and the more powerful your GPU, the faster you can pro
 
 * Install python>=3.10
 * install requirements: `python -m pip install -r requirements.txt`
-* Copy `env_example` to `.env`, then edit `.env` and add your Object Storage credentials and connection info
-* Start the script
+* Copy `env_example` to `.env`, then edit `.env` following instructions below based on the type of storage your pict-rs is using
+
+## Object Storage
+
+* Add your Object Storage credentials and connection info to `.env`
+* Start the script `lemmy_safety_object_storage.py` 
+
+## Object Storage
+
+* Add your pict-rs server ssh credentials and pict-rs paths to `.env`
+* Start the script `lemmy_safety_local_storage.py` 
+
+## Run Types
 
 The script will record all image checked in an sqlite db called `lemmy_safety.db` which will prevent it from checking the same image twice.
 
 The script has two methods: `all` and `daemon`
 
-## All
+### All
 
 Running with the cli arg `--all` will loop through all the images in your object storage and check each of them for CSAM. 
 
 Any potential image will be automatically deleted and its ID recorded in the DB for potential follow-up.
 
-## Daemon
+### Daemon
 
 Running without the `-all` arg will make the script run constantly and check all images uploaded in the past 20 minutes (can be changed using `--minutes`).
 

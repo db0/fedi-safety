@@ -1,6 +1,11 @@
 ## Make a copy of this file into .env and change the below fields
-OBJECT_STORAGE_ENDPOINT="https://eu2.example.com"
-PICTRS_BUCKET="pictrs"
-AWS_ACCESS_KEY_ID=1234asdf5678zxxcvb890qwerty
-AWS_SECRET_ACCESS_KEY=1234567890qwertyuiopasdfghjkl
-AWS_DEFAULT_REGION=auto
+OBJECT_STORAGE_ENDPOINT="https://eu2.example.com"  # Fill in when using object storage
+PICTRS_BUCKET="pictrs"  # Fill in when using object storage
+AWS_ACCESS_KEY_ID=1234asdf5678zxxcvb890qwerty # Fill in when using object storage
+AWS_SECRET_ACCESS_KEY=1234567890qwertyuiopasdfghjkl # Fill in when using object storage
+AWS_DEFAULT_REGION=auto  # Fill in when using object storage
+SSH_HOSTNAME="127.0.0.1" # Fill in when using filesystem storage
+SSH_PORT=22  # Fill in when using filesystem storage
+SSH_USERNAME="root"  # This user should have read/write access to your pict-rs files
+SSH_PRIVKEY="/home/username/.ssh/id_rsa"  # Path to your private key file
+SSH_PICTRS_FILES_DIRECTORY="/lemmy/lemmy.example.com/volumes/pictrs/files"   # Path to your pictrs files directory
