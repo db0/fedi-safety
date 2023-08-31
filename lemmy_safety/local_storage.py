@@ -9,6 +9,7 @@ import stat
 from pathlib import Path
 from loguru import logger
 import pytz
+import contextlib
 
 hostname = os.getenv("SSH_HOSTNAME")
 if hostname is None:
@@ -35,52 +36,55 @@ if hostname is None:
 private_key_passphrase = getpass(prompt="Enter passphrase for private key: ")
 private_key = paramiko.RSAKey(filename=private_key_path, password=private_key_passphrase)
 
+@contextlib.contextmanager
 def get_connection():
-    # I can't re-use the same connection when using threading
-    # So we have to initiate a new connection per thread
     transport = paramiko.Transport((hostname, port))
     transport.connect(username=username, pkey=private_key)
     sftp = paramiko.SFTPClient.from_transport(transport)
-    return sftp
+    try:
+        yield sftp
+    finally:
+        sftp.close()
+        transport.close()
 
 def get_all_images(min_date=None):
-    sftp = get_connection()
-    filelist = []
+    with get_connection() as sftp:
+        filelist = []
 
-    def list_files_recursively(remote_directory):
-        files = sftp.listdir_attr(remote_directory)
-        for file_info in files:
-            file_path = os.path.join(remote_directory, file_info.filename)
-            if stat.S_ISREG(file_info.st_mode):  # Check if it's a regular file
-                modify_time = datetime.datetime.fromtimestamp(file_info.st_mtime, tz=pytz.UTC)
-                if min_date is None or modify_time >= min_date:      
-                    filelist.append(
-                        {
-                            "key": str(Path(file_path).relative_to(Path(remote_base_directory))),
-                            "filepath": Path(file_path),
-                            "mtime": modify_time,
-                        }
-                    )
-            elif stat.S_ISDIR(file_info.st_mode):  # Check if it's a directory
-                list_files_recursively(file_path)
+        def list_files_recursively(remote_directory):
+            files = sftp.listdir_attr(remote_directory)
+            for file_info in files:
+                file_path = os.path.join(remote_directory, file_info.filename)
+                if stat.S_ISREG(file_info.st_mode):  # Check if it's a regular file
+                    modify_time = datetime.datetime.fromtimestamp(file_info.st_mtime, tz=pytz.UTC)
+                    if min_date is None or modify_time >= min_date:      
+                        filelist.append(
+                            {
+                                "key": str(Path(file_path).relative_to(Path(remote_base_directory))),
+                                "filepath": Path(file_path),
+                                "mtime": modify_time,
+                            }
+                        )
+                elif stat.S_ISDIR(file_info.st_mode):  # Check if it's a directory
+                    list_files_recursively(file_path)
 
-    list_files_recursively(remote_base_directory)
-    return filelist
+        list_files_recursively(remote_base_directory)
+        return filelist
 
 def download_image(remote_path):
-    sftp = get_connection()
-    remote_file = sftp.open(remote_path, "rb")
-    image_bytes = remote_file.read()
-    remote_file.close()
-    image_pil = Image.open(BytesIO(image_bytes))
-    return image_pil
+    with get_connection() as sftp:
+        remote_file = sftp.open(remote_path, "rb")
+        image_bytes = remote_file.read()
+        remote_file.close()
+        image_pil = Image.open(BytesIO(image_bytes))
+        return image_pil
 
 
 def delete_image(remote_path):
-    sftp = get_connection()
-    try:
-        sftp.remove(remote_path)
-    except FileNotFoundError:
-        logger.error(f"File not found: {remote_path}")
-    except Exception as e:
-        logger.error(f"Error deleting file {remote_path}: {e}")
+    with get_connection() as sftp:
+        try:
+            sftp.remove(remote_path)
+        except FileNotFoundError:
+            logger.error(f"File not found: {remote_path}")
+        except Exception as e:
+            logger.error(f"Error deleting file {remote_path}: {e}")
