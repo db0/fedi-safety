@@ -30,15 +30,28 @@ This means you need a GPU and the more powerful your GPU, the faster you can pro
 
 ## Object Storage
 
+Use this option when you have configured pict-rs to store its image in an AWS S3-compatible object storage
+
 * Add your Object Storage credentials and connection info to `.env`
 * Start the script `lemmy_safety_object_storage.py` 
 
-## Local Storage
+## Remote Storage
+
+Use this option when your pict-rs is running on a remote linux server where you have ssh access
 
 * Add your pict-rs server ssh credentials and pict-rs paths to `.env`
-* Start the script `lemmy_safety_local_storage.py` 
+* Start the script `lemmy_safety_remove_storage.py` 
 
 Deleting local storage pict-rs requires an account with read/write access to the pict-rs files. You should also have set up public key authentication for that account.
+
+## Local Storage
+
+Use this option when your pict-rs is on the same system you're running this script
+
+* Add your pict-rs file location to `.env`
+* Start the script `lemmy_safety_local_storage.py` 
+
+Deleting local storage pict-rs requires an account with read/write access to the pict-rs files. 
 
 ## Run Types
 
