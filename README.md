@@ -60,6 +60,9 @@ Any potential image will be automatically deleted and its ID recorded in the DB 
 
 The daemon will then endlessly repeat this process after a 30 seconds wait.
 
+# Run in Container
+Please see the [dedicated instructions](CONTAINER.md)
+
 # False positives and False negatives
 
 The script has the potential to detect wrongly of course as the clip model is not perfect.
