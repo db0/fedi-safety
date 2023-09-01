@@ -42,14 +42,14 @@ Edit the env_example file that was downloaded and enter the details for your set
 ## Run the container
 Specify which script you want to run and all of the arguments you want to pass it at the end of the line
 
-### All mode, local storage example
-Local storage mode requires you to enter the passphrase of your ssh key, which means you must pass the `-it` options and must not pass the `-d` option. After entering your passphrase, you can detach your shell from the container with `Ctrl-P, Ctrl-Q`
+### All mode, remote storage example
+Remote storage mode requires you to enter the passphrase of your ssh key, which means you must pass the `-it` options and must not pass the `-d` option. After entering your passphrase, you can detach your shell from the container with `Ctrl-P, Ctrl-Q`
 ```
-docker run -it --rm --device nvidia.com/gpu=all --name lemmy-safety -v ./env_example:/app/.env -v ./lemmy_safety.db:/app/lemmy_safety.db -v /path/to/ssh/key/on/host.key:/app/private_key lemmy-safety:latest lemmy_safety_local_storage.py --all
+docker run -it --rm --device nvidia.com/gpu=all --name lemmy-safety -v ./env_example:/app/.env -v ./lemmy_safety.db:/app/lemmy_safety.db -v /path/to/ssh/key/on/host.key:/app/private_key ghcr.io/db0/lemmy-safety:main lemmy_safety_remote_storage.py --all
 ```
 
 ### Daemon mode, object storage example:
 Object storage mode does not require you to interact with the container, so you can pass the `-d` option.
 ```
-docker run -d --rm --device nvidia.com/gpu=all --name lemmy-safety -v ./env_example:/app/.env -v ./lemmy_safety.db:/app/lemmy_safety.db lemmy-safety:latest lemmy_safety_object_storage.py
+docker run -d --rm --device nvidia.com/gpu=all --name lemmy-safety -v ./env_example:/app/.env -v ./lemmy_safety.db:/app/lemmy_safety.db ghcr.io/db0/lemmy-safety:main lemmy_safety_object_storage.py
 ```
