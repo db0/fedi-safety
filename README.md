@@ -40,7 +40,7 @@ Use this option when you have configured pict-rs to store its image in an AWS S3
 Use this option when your pict-rs is running on a remote linux server where you have ssh access
 
 * Add your pict-rs server ssh credentials and pict-rs paths to `.env`
-* Start the script `lemmy_safety_remove_storage.py` 
+* Start the script `lemmy_safety_remote_storage.py` 
 
 Deleting local storage pict-rs requires an account with read/write access to the pict-rs files. You should also have set up public key authentication for that account.
 
