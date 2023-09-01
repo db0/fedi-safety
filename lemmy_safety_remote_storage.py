@@ -1,4 +1,4 @@
-# This script is going to clean up images stored in the same system it's running on
+# This script is going to clean up images stored in a remote server via ssh
 
 import time
 import logging
@@ -9,8 +9,9 @@ import PIL.Image
 from PIL import UnidentifiedImageError
 
 from loguru import logger
+import sys
 
-from lemmy_safety import local_storage
+from lemmy_safety import remote_storage
 from lemmy_safety import database
 from lemmy_safety.check import check_image
 
@@ -28,7 +29,7 @@ args = arg_parser.parse_args()
 def check_and_delete_filename(file_details):
     is_csam = False
     try:
-        image: PIL.Image.Image = local_storage.load_image(str(file_details["filepath"]))
+        image: PIL.Image.Image = remote_storage.download_image(str(file_details["filepath"]))
         if not image:
             is_csam = None
         else:
@@ -37,13 +38,13 @@ def check_and_delete_filename(file_details):
         logger.warning("Image could not be read. Returning it as CSAM to be sure.")
         is_csam = True
     if is_csam and not args.dry_run:
-        local_storage.delete_image(str(file_details["filepath"]))
+        remote_storage.delete_image(str(file_details["filepath"]))
     return is_csam, file_details
 
 def run_cleanup(cutoff_time = None):
     with ThreadPoolExecutor(max_workers=args.threads) as executor:
         futures = []
-        for file_details in local_storage.get_all_images(cutoff_time):
+        for file_details in remote_storage.get_all_images(cutoff_time):
             if not database.is_image_checked(file_details["key"]):
                 futures.append(executor.submit(check_and_delete_filename, file_details))
             if len(futures) >= 500:

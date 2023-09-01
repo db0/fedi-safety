@@ -1,3 +1,5 @@
+# This script is going to clean up images stored in an AWS S3-compatible object storage
+
 import time
 import logging
 from datetime import datetime, timedelta, timezone
@@ -25,6 +27,7 @@ args = arg_parser.parse_args()
 
 
 def check_and_delete_filename(key):
+    is_csam = False
     try:
         image: PIL.Image.Image = object_storage.download_image(key)
         if not image:
