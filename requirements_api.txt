@@ -1,0 +1,19 @@
+werkzeug~=2.2.2
+Flask~=2.2.2
+flask-restx
+flask_limiter~=2.8.1
+Flask-Caching
+waitress>=2.1.2
+requests >= 2.27
+Markdown~=3.4.4
+python-dotenv
+loguru
+python-dateutil~=2.8.2
+flask_sqlalchemy==3.0.2
+SQLAlchemy~=1.4.44
+psycopg2-binary
+regex
+pythorhead>=0.8.2
+bleach
+boto3
+pybadges
