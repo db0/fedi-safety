@@ -161,3 +161,4 @@ cython_debug/
 
 lemmy_safety.db
 lemmy_safety.db-journal
+api_test*
