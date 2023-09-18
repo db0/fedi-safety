@@ -5,6 +5,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_sqlalchemy import SQLAlchemy
 from loguru import logger
 
+os.makedirs(os.getenv("FEDIVERSE_SAFETY_IMGDIR"), exist_ok=True)
 cache = None
 APP = Flask(__name__)
 APP.wsgi_app = ProxyFix(APP.wsgi_app, x_for=1)
