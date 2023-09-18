@@ -27,7 +27,7 @@ db.init_app(APP)
 if not SQLITE_MODE:
     with APP.app_context():
         logger.debug("pool size = {}".format(db.engine.pool.size()))
-logger.init_ok("Fediseer Database", status="Started")
+logger.init_ok("Fedi Safety Database", status="Started")
 
 # Allow local workstation run
 if cache is None:

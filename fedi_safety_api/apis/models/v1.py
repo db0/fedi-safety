@@ -1,5 +1,4 @@
 from flask_restx import fields
-from fedi_safety_api import enums
 
 class Models:
     def __init__(self,api):

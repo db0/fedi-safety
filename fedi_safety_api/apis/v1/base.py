@@ -1,6 +1,7 @@
 import os
 from PIL import Image
 from io import BytesIO
+from werkzeug.datastructures import FileStorage
 from flask import request
 from flask_restx import Namespace, Resource, reqparse
 from fedi_safety_api.flask import cache, db
@@ -30,19 +31,21 @@ def get_request_path():
 
 
 class Scan(Resource):
-    post_parser = reqparse.RequestParser()
+    post_parser = api.parser()
     post_parser.add_argument("Content-Type", type=str, required=False, help="The file's media type.", location="headers")
+    post_parser.add_argument('file', location='files', type=FileStorage, required=False)
 
     @api.expect(post_parser)
-    @logger.catch(reraise=True)
-    def get(self):
+    def post(self):
         '''Scan an image
         '''
-        self.args = self.get_parser.parse_args()
-        file = request.files.get("content")
+        # I don't get why this is not using the import from earlier...
+        from fedi_safety_api import exceptions as e
+        self.args = self.post_parser.parse_args()
+        file = self.args["file"]
         if not file:
             raise e.BadRequest("No file provided")
-        allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
+        allowed_extensions = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
         if not file.filename.lower().endswith(tuple(allowed_extensions)):
             raise e.BadRequest("Invalid file format")
         try:
