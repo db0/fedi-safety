@@ -1,11 +1,11 @@
-name: Build and Deploy Lammy Safety Docker Container
+name: Build and Deploy Fediverse Safety Docker Container
 
 on:
   workflow_dispatch:
 
 jobs:
   build-publish-worker-docker:
-    name: Lemmy Safety Container
+    name: Fediverse Safety Container
     runs-on: ubuntu-latest
     steps:
     - name: "✔️ Checkout"

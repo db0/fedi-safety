@@ -1,7 +1,7 @@
 FROM docker.io/python:3.10-slim-bookworm
 
 WORKDIR /app
-COPY lemmy_safety lemmy_safety
+COPY fedi_safety fedi_safety
 COPY *.py .
 COPY requirements.txt requirements.txt
 
