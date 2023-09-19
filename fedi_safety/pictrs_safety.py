@@ -6,7 +6,7 @@ from PIL import Image
 from io import BytesIO
 from pathlib import Path
 from loguru import logger
-from lemmy_safety.check import check_image
+from fedi_safety.check import check_image
 
 pictrs_safety_url = os.getenv("PICTRS_SAFETY_URL")
 if pictrs_safety_url is None:

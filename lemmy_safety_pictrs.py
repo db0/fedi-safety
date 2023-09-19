@@ -7,7 +7,7 @@ import argparse
 
 from loguru import logger
 
-from lemmy_safety import pictrs_safety
+from fedi_safety import pictrs_safety
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(module)s:%(lineno)d - %(message)s', level=logging.WARNING)
 
