@@ -9,3 +9,5 @@ SSH_PORT=22  # Remote Storage
 SSH_USERNAME="root"  # Remote Storage: This user should have read/write access to your pict-rs files
 SSH_PRIVKEY="/home/username/.ssh/id_rsa"  # Remote Storage: Path to your private key file
 PICTRS_FILES_DIRECTORY="/lemmy/lemmy.example.com/volumes/pictrs/files"   # Remote/Local Storage: Path to your pictrs files directory. 
+PICTRS_SAFETY_URL="http://lemmy.example.com:14051" # The URL where your pictrs-safety is reachable
+PICTRS_SAFETY_APIKEY="abcdefg12345" # Should match FEDIVERSE_SAFETY_WORKER_AUTH you set in pirtrs-safety .env

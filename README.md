@@ -28,6 +28,14 @@ This means you need a GPU and the more powerful your GPU, the faster you can pro
 * install requirements: `python -m pip install -r requirements.txt`
 * Copy `env_example` to `.env`, then edit `.env` following instructions below based on the type of storage your pict-rs is using
 
+## Pictrs-Safety
+
+Use this option is you have installed [pictrs-safety](https://github.com/db0/pictrs-safety) and set your pict-rs to validate images
+
+* Start the script `lemmy_safety_pictrs.py`. Use `-t` to specify number of threads. The more powerful your GPU, the more threads you can have.
+
+This will run forever, polling pictrs-safety every 0.1 seconds for new images and will return a boolean with the result of the csam detection
+
 ## Object Storage
 
 Use this option when you have configured pict-rs to store its image in an AWS S3-compatible object storage
