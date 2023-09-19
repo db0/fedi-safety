@@ -10,9 +10,9 @@ from PIL import UnidentifiedImageError
 
 from loguru import logger
 
-from lemmy_safety import local_storage
-from lemmy_safety import database
-from lemmy_safety.check import check_image
+from fedi_safety import local_storage
+from fedi_safety import database
+from fedi_safety.check import check_image
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(module)s:%(lineno)d - %(message)s', level=logging.WARNING)
 
