@@ -9,6 +9,7 @@ interrogator = get_interrogator_no_blip()
 
 def check_image(image):
     try:
+        image.thumbnail((512, 512))
         is_csam, results, info = check_for_csam(
             interrogator=interrogator,
             image=image,
