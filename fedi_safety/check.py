@@ -7,7 +7,7 @@ from horde_safety.interrogate import get_interrogator_no_blip
 
 interrogator = get_interrogator_no_blip()
 
-def check_image(image):
+def check_image(image, flag_unreadable=True):
     try:
         image.thumbnail((512, 512))
         is_csam, results, info = check_for_csam(
@@ -17,6 +17,7 @@ def check_image(image):
             model_info={"nsfw": True, "tags": []},
         )
     except OSError:
-        logger.warning("Image could not be read. Returning it as CSAM to be sure.")
-        return True
+        if flag_unreadable:
+            return True
+        return False
     return is_csam
