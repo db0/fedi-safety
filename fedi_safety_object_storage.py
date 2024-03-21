@@ -45,8 +45,12 @@ def check_and_delete_object(obj):
         else:
             is_csam = check_image(image,args.skip_unreadable)
     except UnidentifiedImageError:
-        logger.warning("Image could not be read. Returning it as CSAM to be sure.")
-        is_csam = True
+        if args.skip_unreadable:
+            logger.warning("Image could not be read. Skipping it.")
+            is_csam = None
+        else:
+            logger.warning("Image could not be read. Returning it as CSAM to be sure.")
+            is_csam = True
     if is_csam and not args.dry_run:
         obj.delete()
     return is_csam, obj
