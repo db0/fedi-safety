@@ -27,10 +27,10 @@ def check_and_delete_filename(file_details):
             is_csam = check_image(image,args.skip_unreadable)
     except UnidentifiedImageError:
         if args.skip_unreadable:
-            logger.warning("Image could not be read. Skipping it.")
+            logger.warning(f"Image {file_details['filepath']} could not be read. Skipping it.")
             is_csam = None
         else:
-            logger.warning("Image could not be read. Returning it as CSAM to be sure.")
+            logger.warning(f"Image {file_details['filepath']} could not be read. Returning it as CSAM to be sure.")
             is_csam = True
     if is_csam and not args.dry_run:
         local_storage.delete_image(str(file_details["filepath"]))
