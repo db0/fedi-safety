@@ -25,10 +25,14 @@ def check_and_delete_filename(file_details):
         if not image:
             is_csam = None
         else:            
-            is_csam = check_image(image,args.flag_unreadable)
+            is_csam = check_image(image,args.skip_unreadable)
     except UnidentifiedImageError:
-        logger.warning("Image could not be read. Returning it as CSAM to be sure.")
-        is_csam = True
+        if args.skip_unreadable:
+            logger.warning("Image could not be read. Skipping it.")
+            is_csam = None
+        else:
+            logger.warning("Image could not be read. Returning it as CSAM to be sure.")
+            is_csam = True
     if is_csam and not args.dry_run:
         remote_storage.delete_image(str(file_details["filepath"]))
     return is_csam, file_details
@@ -42,12 +46,14 @@ def run_cleanup(cutoff_time = None):
             if len(futures) >= 500:
                 for future in futures:
                     result, fdetails = future.result()
-                    database.record_image(fdetails["key"],csam=result)
+                    if result is not None or not args.skip_unreadable:
+                        database.record_image(fdetails["key"],csam=result)
                 logger.info(f"Safety Checked Images: {len(futures)}")
                 futures = []
         for future in futures:
             result, fdetails = future.result()
-            database.record_image(fdetails["key"],csam=result)
+            if result is not None or not args.skip_unreadable:
+                database.record_image(fdetails["key"],csam=result)
         logger.info(f"Safety Checked Images: {len(futures)}")    
 
 if __name__ == "__main__":
