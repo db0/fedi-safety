@@ -27,10 +27,10 @@ def check_and_delete_filename(key):
             is_csam = check_image(image,args.skip_unreadable)
     except UnidentifiedImageError:
         if args.skip_unreadable:
-            logger.warning(f"Image {key} could not be read. Skipping it.")
+            logger.warning(f"Image '{key}' could not be read. Skipping it.")
             is_csam = None
         else:
-            logger.warning(f"Image {key} could not be read. Returning it as CSAM to be sure.")
+            logger.warning(f"Image '{key}' could not be read. Returning it as CSAM to be sure.")
             is_csam = True
     if is_csam and not args.dry_run:
         object_storage.delete_image(key)
@@ -46,10 +46,10 @@ def check_and_delete_object(obj):
             is_csam = check_image(image,args.skip_unreadable)
     except UnidentifiedImageError:
         if args.skip_unreadable:
-            logger.warning("Image could not be read. Skipping it.")
+            logger.warning(f"Image '{obj.key}' could not be read. Skipping it.")
             is_csam = None
         else:
-            logger.warning("Image could not be read. Returning it as CSAM to be sure.")
+            logger.warning(f"Image '{obj.key}' could not be read. Returning it as CSAM to be sure.")
             is_csam = True
     if is_csam and not args.dry_run:
         obj.delete()
