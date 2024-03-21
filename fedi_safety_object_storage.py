@@ -13,7 +13,7 @@ import sys
 from fedi_safety import object_storage
 from fedi_safety import database
 from fedi_safety.check import check_image
-from fedi_safety import args
+from fedi_safety.args import args
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(module)s:%(lineno)d - %(message)s', level=logging.WARNING)
 
