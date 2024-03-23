@@ -12,10 +12,13 @@ from loguru import logger
 from fedi_safety import local_storage
 from fedi_safety import database
 from fedi_safety.check import check_image
-from fedi_safety.args import args
+from fedi_safety.args import get_argparser
+
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(module)s:%(lineno)d - %(message)s', level=logging.WARNING)
 
+arg_parser = get_argparser()
+args = arg_parser.parse_args()
 
 def check_and_delete_filename(file_details):
     is_csam = False

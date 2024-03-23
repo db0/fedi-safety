@@ -13,9 +13,13 @@ import sys
 from fedi_safety import object_storage
 from fedi_safety import database
 from fedi_safety.check import check_image
-from fedi_safety.args import args
+from fedi_safety.args import get_argparser
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(module)s:%(lineno)d - %(message)s', level=logging.WARNING)
+
+arg_parser = get_argparser()
+arg_parser.add_argument('--prefix', action="store", required=False, type=str, help="If specified, will only retrieve files from the specified prefix (e.g. a directory name)")
+args = arg_parser.parse_args()
 
 def check_and_delete_filename(key):
     is_csam = False
@@ -59,7 +63,7 @@ if __name__ == "__main__":
     if args.all:
         with ThreadPoolExecutor(max_workers=args.threads) as executor:
             futures = []
-            for obj in object_storage.get_all_images():
+            for obj in object_storage.get_all_images(prefix=args.prefix):
                 if not database.is_image_checked(obj.key):
                     futures.append(executor.submit(check_and_delete_object, obj))
                 if len(futures) >= 1000:
@@ -83,6 +87,8 @@ if __name__ == "__main__":
             with ThreadPoolExecutor(max_workers=args.threads) as executor:
                 futures = []
                 for key in object_storage.get_all_images_after(cutoff_time):
+                    if args.prefix and not key.startswith(args.prefix):
+                        continue
                     if not database.is_image_checked(key):
                         futures.append(executor.submit(check_and_delete_filename, key))
                     if len(futures) >= 500:

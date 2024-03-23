@@ -45,5 +45,7 @@ def get_all_images_after(cutoff_time):
     )
     return filtered_iterator
 
-def get_all_images():
+def get_all_images(prefix=None):
+    if prefix:
+        return s3_bucket.objects.filter(Prefix=prefix)
     return s3_bucket.objects.all()
