@@ -11,3 +11,6 @@ SSH_PRIVKEY="/home/username/.ssh/id_rsa"  # Remote Storage: Path to your private
 PICTRS_FILES_DIRECTORY="/lemmy/lemmy.example.com/volumes/pictrs/files"   # Remote/Local Storage: Path to your pictrs files directory. 
 PICTRS_SAFETY_URL="http://lemmy.example.com:14051" # The URL where your pictrs-safety is reachable
 PICTRS_SAFETY_APIKEY="abcdefg12345" # Should match FEDIVERSE_SAFETY_WORKER_AUTH you set in pirtrs-safety .env
+# Set SQLITE_FILENAME here on in your local env before starting the fedi-safety so that you can change the sqlite filename
+# This is useful if you scan multiple locations from the same installation
+#SQLITE_FILENAME="lemmy_safety.db" 

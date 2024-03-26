@@ -1,3 +1,4 @@
+import os
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -5,7 +6,7 @@ from datetime import datetime
 from loguru import logger
 
 # Create an SQLite in-memory database for demonstration purposes
-engine = create_engine('sqlite:///lemmy_safety.db')
+engine = create_engine(f'sqlite:///{os.getenv("SQLITE_FILENAME", "lemmy_safety.db")}')
 
 Base = declarative_base()
 
