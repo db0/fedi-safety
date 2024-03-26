@@ -6,6 +6,7 @@ from datetime import datetime
 from loguru import logger
 
 # Create an SQLite in-memory database for demonstration purposes
+# Using lemmy_safety to avoid messing with existing installations
 engine = create_engine(f'sqlite:///{os.getenv("SQLITE_FILENAME", "lemmy_safety.db")}')
 
 Base = declarative_base()
@@ -27,8 +28,15 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 db = Session()
 
-def is_image_checked(key):
-    return db.query(CheckedImage).filter_by(filename=key).first()
+def is_image_checked(key, rescan_skipped=False):
+    query = db.query(
+        CheckedImage
+    ).filter_by(
+        filename=key
+    )
+    if rescan_skipped:
+        query = query.filter(CheckedImage.csam != None)   
+    return query.first()
 
 def is_image_csam(key):
     return db.query(CheckedImage).filter_by(filename=key).first().csam

@@ -7,4 +7,5 @@ def get_argparser():
     arg_parser.add_argument('-m', '--minutes', action="store", required=False, default=20, type=int, help="The images of the past how many minutes to check.")
     arg_parser.add_argument('--dry_run', action="store_true", required=False, default=False, help="Will check and reprt but will not delete")
     arg_parser.add_argument('--skip_unreadable', action="store_true", required=False, default=False, help="If True, unreadable images will be ignored instead of being marked as CSAM")
+    arg_parser.add_argument('--rescan_skipped', action="store_true", required=False, default=False, help="If True, will rescan previously skipped files")
     return arg_parser

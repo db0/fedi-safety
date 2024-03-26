@@ -43,13 +43,12 @@ def run_cleanup(cutoff_time = None):
     with ThreadPoolExecutor(max_workers=args.threads) as executor:
         futures = []
         for file_details in local_storage.get_all_images(cutoff_time):
-            if not database.is_image_checked(file_details["key"]):
+            if not database.is_image_checked(file_details["key"], args.rescan_skipped):
                 futures.append(executor.submit(check_and_delete_filename, file_details))
             if len(futures) >= 500:
                 for future in futures:
                     result, fdetails = future.result()
-                    if result is not None or not args.skip_unreadable:
-                        database.record_image(fdetails["key"],csam=result)
+                    database.record_image(fdetails["key"],csam=result)
                 logger.info(f"Safety Checked Images: {len(futures)}")
                 futures = []
         for future in futures:

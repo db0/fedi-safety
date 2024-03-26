@@ -64,13 +64,12 @@ if __name__ == "__main__":
         with ThreadPoolExecutor(max_workers=args.threads) as executor:
             futures = []
             for obj in object_storage.get_all_images(prefix=args.prefix):
-                if not database.is_image_checked(obj.key):
+                if not database.is_image_checked(obj.key, args.rescan_skipped):
                     futures.append(executor.submit(check_and_delete_object, obj))
                 if len(futures) >= 1000:
                     for future in futures:
                         result, obj = future.result()
-                        if result is not None or not args.skip_unreadable:
-                            database.record_image(obj.key,csam=result)
+                        database.record_image(obj.key,csam=result)
                     logger.info(f"Safety Checked Images: {len(futures)}")
                     futures = []
             for future in futures:
@@ -89,13 +88,12 @@ if __name__ == "__main__":
                 for key in object_storage.get_all_images_after(cutoff_time):
                     if args.prefix and not key.startswith(args.prefix):
                         continue
-                    if not database.is_image_checked(key):
+                    if not database.is_image_checked(key, args.rescan_skipped):
                         futures.append(executor.submit(check_and_delete_filename, key))
                     if len(futures) >= 500:
                         for future in futures:
                             result, key = future.result()
-                            if result is not None or not args.skip_unreadable:
-                                database.record_image(key,csam=result)
+                            database.record_image(key,csam=result)
                         logger.info(f"Safety Checked Images: {len(futures)}")
                         futures = []
                 for future in futures:
