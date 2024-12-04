@@ -1,9 +1,9 @@
 # Fediverse Safety
-This is a tool for Lemmy Administrators to easily check and clean all images in the pict-rs storage for illegal or unethical content
+This is a tool for Fediverse instance Administrators to easily check and clean all images in their object, block or pict-rs storage for illegal or unethical content
 
 Note, this script **does not save any images locally** and it **does not send images to any extenal services**. All images are stored in RAM only, checked and then forgotten.
 
-Due to the way lemmy and pict-rs works, instance admins do not have sufficient means to check for CSAM, which puts them in big risks as image thumbnails from foreign instances are cached by default to their own object storage. 
+This tool was initially developed as due to the way lemmy and pict-rs works, instance admins do not have sufficient means to check for CSAM, which puts them in big risks as image thumbnails from foreign instances are cached by default to their own object storage. 
 
 There's two big potential problems:
 
@@ -38,23 +38,23 @@ This will run forever, polling pictrs-safety every 0.1 seconds for new images an
 
 ## Object Storage
 
-Use this option when you have configured pict-rs to store its image in an AWS S3-compatible object storage
+Use this option when you have configured your fediverse images or pict-rs to store its image in an AWS S3-compatible object storage
 
 * Add your Object Storage credentials and connection info to `.env`
 * Start the script `fedi_safety_object_storage.py` 
 
 ## Remote Storage
 
-Use this option when your pict-rs is running on a remote linux server where you have ssh access
+Use this option when your fediverse images or pict-rs is running on a remote linux server where you have ssh access
 
 * Add your pict-rs server ssh credentials and pict-rs paths to `.env`
 * Start the script `fedi_safety_remote_storage.py` 
 
-Deleting local storage pict-rs requires an account with read/write access to the pict-rs files. You should also have set up public key authentication for that account.
+Deleting local storage requires an account with read/write access to the files. You should also have set up public key authentication for that account.
 
 ## Local Storage
 
-Use this option when your pict-rs is on the same system you're running this script
+Use this option when your fediverse images or pict-rs is on the same system you're running this script
 
 * Add your pict-rs file location to `.env`
 * Start the script `fedi_safety_local_storage.py` 
