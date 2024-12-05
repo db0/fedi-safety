@@ -14,3 +14,5 @@ PICTRS_SAFETY_APIKEY="abcdefg12345" # Should match FEDIVERSE_SAFETY_WORKER_AUTH 
 # Set SQLITE_FILENAME here on in your local env before starting the fedi-safety so that you can change the sqlite filename
 # This is useful if you scan multiple locations from the same installation
 #SQLITE_FILENAME="lemmy_safety.db" 
+# Valid values are DEBUG, INFO, WARNING, ERROR
+LOGURU_LEVEL=INFO
