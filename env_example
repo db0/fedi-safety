@@ -1,18 +1,25 @@
-## Make a copy of this file into .env and change the below fields
-OBJECT_STORAGE_ENDPOINT="https://eu2.example.com"  # Object Storage
-PICTRS_BUCKET="pictrs"  # Object Storage
-AWS_ACCESS_KEY_ID=1234asdf5678zxxcvb890qwerty # Object Storage
-AWS_SECRET_ACCESS_KEY=1234567890qwertyuiopasdfghjkl # Object Storage
-AWS_DEFAULT_REGION=auto  # Remote Storage
-SSH_HOSTNAME="127.0.0.1" # Remote Storage
-SSH_PORT=22  # Remote Storage
-SSH_USERNAME="root"  # Remote Storage: This user should have read/write access to your pict-rs files
-SSH_PRIVKEY="/home/username/.ssh/id_rsa"  # Remote Storage: Path to your private key file. Windows systems path: Use c:\\path\\to\\saved\\private\\key
+# Make a copy of this file into .env and change the below fields
+## Object Storage
+OBJECT_STORAGE_ENDPOINT="https://eu2.example.com"
+PICTRS_BUCKET="pictrs"
+AWS_ACCESS_KEY_ID=1234asdf5678zxxcvb890qwerty
+AWS_SECRET_ACCESS_KEY=1234567890qwertyuiopasdfghjkl 
+## Remote Storage
+AWS_DEFAULT_REGION=auto  
+SSH_HOSTNAME="127.0.0.1"
+SSH_PORT=22
+### Remote Storage: This user should have read/write access to your pict-rs files
+SSH_USERNAME="root"
+### Remote Storage: Path to your private key file. Windows systems path: Use c:\\path\\to\\saved\\private\\key
+SSH_PRIVKEY="/home/username/.ssh/id_rsa"
 PICTRS_FILES_DIRECTORY="/lemmy/lemmy.example.com/volumes/pictrs/files"   # Remote/Local Storage: Path to your pictrs files directory. 
+## Pictrs-safety
 PICTRS_SAFETY_URL="http://lemmy.example.com:14051" # The URL where your pictrs-safety is reachable
 PICTRS_SAFETY_APIKEY="abcdefg12345" # Should match FEDIVERSE_SAFETY_WORKER_AUTH you set in pirtrs-safety .env
-# Set SQLITE_FILENAME here on in your local env before starting the fedi-safety so that you can change the sqlite filename
-# This is useful if you scan multiple locations from the same installation
+## Set SQLITE_FILENAME here on in your local env before starting the fedi-safety so that you can change the sqlite filename
+## This is useful if you scan multiple locations from the same installation
 #SQLITE_FILENAME="lemmy_safety.db" 
-# Valid values are DEBUG, INFO, WARNING, ERROR
+## Logger. Valid values are DEBUG, INFO, WARNING, ERROR
 LOGURU_LEVEL=INFO
+## If set to false, will use the obsolete horde safety which will probably have higher false positive rate
+USE_NEW_SAFETY=true

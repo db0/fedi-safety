@@ -4,10 +4,10 @@ import time
 import logging
 from concurrent.futures import ThreadPoolExecutor
 import argparse
+from fedi_safety import pictrs_safety
 
 from loguru import logger
 
-from fedi_safety import pictrs_safety
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(module)s:%(lineno)d - %(message)s', level=logging.WARNING)
 

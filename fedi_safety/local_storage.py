@@ -7,8 +7,9 @@ import stat
 from pathlib import Path
 from loguru import logger
 import pytz
+from fedi_safety.config import Config
 
-local_base_directory = os.getenv("PICTRS_FILES_DIRECTORY")
+local_base_directory = Config.pictrs_files_directory
 if local_base_directory is None:
     logger.error("You need to provide an PICTRS_FILES_DIRECTORY var in your .env file")
     sys.exit(1)

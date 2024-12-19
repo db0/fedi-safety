@@ -10,26 +10,25 @@ from pathlib import Path
 from loguru import logger
 import pytz
 import contextlib
+from fedi_safety.config import Config
 
-hostname = os.getenv("SSH_HOSTNAME")
+hostname = Config.ssh_hostname
 if hostname is None:
     logger.error("You need to provide an SSH_HOSTNAME var in your .env file")
     sys.exit(1)
-port = os.getenv("SSH_PORT")
+port = Config.ssh_port
 if hostname is None:
     logger.error("You need to provide an SSH_PORT var in your .env file")
     sys.exit(1)
-port = int(port)
-username = os.getenv("SSH_USERNAME")
+username = Config.ssh_username
 if hostname is None:
     logger.error("You need to provide an SSH_USERNAME var in your .env file")
     sys.exit(1)
-private_key_path = os.getenv("SSH_PRIVKEY")
+private_key_path = Config.ssh_privkey
 if hostname is None:
     logger.error("You need to provide an SSH_PRIVKEY var in your .env file")
     sys.exit(1)
-ssh_base_directory = os.getenv("SSH_PICTRS_FILES_DIRECTORY") # Deprecated
-remote_base_directory = os.getenv("PICTRS_FILES_DIRECTORY", ssh_base_directory)
+remote_base_directory = Config.pictrs_files_directory
 if remote_base_directory is None:
     logger.error("You need to provide an PICTRS_FILES_DIRECTORY var in your .env file")
     sys.exit(1)

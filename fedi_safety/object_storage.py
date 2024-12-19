@@ -5,12 +5,13 @@ from loguru import logger
 import sys
 import PIL.Image
 from io import BytesIO
+from fedi_safety.config import Config
 
-object_storage_endpoint = os.getenv("OBJECT_STORAGE_ENDPOINT")
+object_storage_endpoint = Config.object_storage_endpoint
 if object_storage_endpoint is None:
     logger.error("You need to provide an OBJECT_STORAGE_ENDPOINT var in your .env file")
     sys.exit(1)
-pictrs_bucket = os.getenv("PICTRS_BUCKET")
+pictrs_bucket = Config.pictrs_bucket
 if pictrs_bucket is None:
     logger.error("You need to provide a PICTRS_BUCKET var in your .env file")
     sys.exit(1)

@@ -4,9 +4,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from loguru import logger
+from fedi_safety.config import Config
 
 # Create an SQLite in-memory database for demonstration purposes
-engine = create_engine(f'sqlite:///{os.getenv("SQLITE_FILENAME", "lemmy_safety.db")}')
+engine = create_engine(f'sqlite:///{Config.sqlite_filename}')
 
 Base = declarative_base()
 

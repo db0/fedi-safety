@@ -7,12 +7,13 @@ from io import BytesIO
 from pathlib import Path
 from loguru import logger
 from fedi_safety.check import check_image
+from fedi_safety.config import Config
 
-pictrs_safety_url = os.getenv("PICTRS_SAFETY_URL")
+pictrs_safety_url = Config.pictrs_safety_url
 if pictrs_safety_url is None:
     logger.error("You need to provide an PICTRS_SAFETY_URL var in your .env file")
     sys.exit(1)
-pictrs_safety_apikey = os.getenv("PICTRS_SAFETY_APIKEY")
+pictrs_safety_apikey = Config.pictrs_safety_apikey
 if pictrs_safety_apikey is None:
     logger.error("You need to provide an PICTRS_SAFETY_APIKEY var in your .env file")
     sys.exit(1)
